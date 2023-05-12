@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { Comment } from './models/comment.model';
+import { Post } from './models/post.model';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +10,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = '01_Angular_empty';
+  posts !: Post[];
+  comments !: Comment[]
+  oPost !: Observable<Post>;
+  private serviceURL = ''
+  
+
+  constructor(public http: HttpClient) {
+  this.makeTypedRequest()
+  }
+
+  makeTypedRequest(){
+
+  }
 }
