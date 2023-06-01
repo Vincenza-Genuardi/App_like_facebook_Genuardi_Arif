@@ -15,6 +15,29 @@
     </span> -->
     <p class="d-inline-block ">{{post.like}}</p>
     
+    <i><a href="#" class="text-decoration-none float-end" (click)="visualCreaComment()" >{{contaNumeroCommenti()}} Commenti</a></i>
+          <div *ngIf="mostra == true">
+            <ul *ngFor="let c of comm" >
+                <li>
+                  <app-comments [comment]="c"></app-comments>
+                </li>
+              </ul>
+            <div class="card" style="width:1000px">
+                <div>
+                    <b><label for="autore">AUTORE:</label></b>
+                    <input name="Autore" #newautore>
+                  </div>
+                  <div>
+                    <label for="testo">TESTO:</label>
+                    <input name="Testo" #newtesto>
+                  </div>
+                  <button (click)="addCommento(newautore, newtesto, post.id)" class="btn btn-primary">
+                    Inserisci nuovo commento
+                  </button>
+                </div> 
+            </div>
+            
+          
     <hr>
 </div>
 
