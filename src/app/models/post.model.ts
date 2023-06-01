@@ -1,13 +1,20 @@
 export class Post{
-    private id: number;
-    private autore: string;
-    private testo: string;
-    private idpost: number;
+    public id: number;
+    public autore: string;
+    public testo: string;
+    public like: number;
 
-    constructor(id: number, autore: string, testo: string, idpost:number) {
+    constructor(id: number, autore: string, testo: string, like:number) {
       this.id = id;
       this.autore = autore;
       this.testo = testo;
-      this.idpost = idpost;
+      this.like = like;
     }
+    addLike(){
+      this.like += 1;
+    }
+  
+    /* removeLike(){
+      this.like -= 1;
+    } */
 }

@@ -1,12 +1,60 @@
-<form>
-  <h3>AGGIUNGERE UN POST</h3>
-  <div>
-    <label for="autore">AUTORE:</label>
-    <input name="Autore">
-  </div>
-  <div>
-    <label for="testo">TESTO:</label>
-    <input name="Testo">
-  </div>
-</form>
 
+ <!--  <div class="container">
+    <h3>AGGIUNGERE UN POST</h3>
+    <div>
+      <label for="autore">AUTORE:</label>
+      <input name="Autore" #newautore>
+    </div>
+    <div>
+      <label for="testo">TESTO:</label>
+      <input name="Testo"  #newtesto>
+    </div>
+    <button (click)="addPost(newautore, newtesto)" class="btn btn-primary">
+      Inserisci nuovo post
+    </button>
+  </div>  -->
+  <div class="container">
+    <div class="row">
+      <div class="card col-3" style="height:250px">
+        <div class="card-body">
+          <div>
+            <b><label for="autore">AUTORE:</label><br></b>
+            <input style="height: 25px;" name="Autore" #newautore>
+          </div>
+          <div>
+            <b><label for="testo">TESTO:</label><br></b>
+            <input style="height: 100px;" name="Testo" #newtesto>
+          </div>
+          <button href='#' (click)="addPost(newautore, newtesto)" class="btn btn-primary">
+            Inserisci nuovo post
+          </button>
+        </div>
+      </div>
+      <div class="col-9">
+        <div *ngFor="let p of sortedPost()">
+          <app-posts [post]="p"></app-posts>
+        
+          <i><a href="#" class="text-decoration-none float-end" (click)="visualCreaComment()" >{{contaNumeroCommenti(p.id)}} Commenti</a></i>
+          <ul *ngFor="let c of data.comments" >
+            <li *ngIf="p.id == c.idpost">
+              <app-comments [comment]="c"></app-comments>
+            </li>
+          </ul>
+          <div *ngIf="mostra == true" class="card" style="width:1000px">
+            <div>
+              <b><label for="autore">AUTORE:</label></b>
+              <input name="Autore" #newautore>
+            </div>
+            <div>
+              <label for="testo">TESTO:</label>
+              <input name="Testo" #newtesto>
+            </div>
+            <button (click)="addCommento(newautore, newtesto, p.id)" class="btn btn-primary">
+              Inserisci nuovo commento
+            </button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
