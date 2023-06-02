@@ -1,8 +1,22 @@
-.card{
+.formInserimento{
     width: 15rem;
-    background-color: rgb(94, 94, 206);
+    background-color: rgb(157, 157, 251);
+    height:250px;
 }
-.btn{
+.btnInserimento{
     background-color: green;
     border-color: darkgreen;
+}
+.messaggio{
+    width: 15rem;
+}
+.insAutore{
+    height: 25px;
+}
+.insTesto{
+    height: 100px;
+}
+.errore{
+    color: red; 
+    text-align: start;
 }

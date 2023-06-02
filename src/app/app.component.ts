@@ -1,75 +1,59 @@
-import { Component } from '@angular/core';
-import { Comment } from './models/comment.model';
+import { Component, OnInit } from '@angular/core';
 import { Post } from './models/post.model';
-import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { PostEComment } from './models/postEComment.model';
-import { Data } from '@angular/router';
+import { CommentiService } from './services/commenti.service';
+import { Comment } from './models/comment.model';
+import { PostsService } from './services/posts.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [CommentiService, PostsService]
 })
-export class AppComponent {
-  /* dataPost !: Post[];
-  dataComment !: Comment[]; */
-  /* oPost !: Observable<Post[]>;
-  oComment !: Observable<Comment[]>;
-  private serviceURLPosts = 'https://my-json-server.typicode.com/Vincenza-Genuardi/Genu_facebook/posts'
-  private serviceURLComments = 'https://my-json-server.typicode.com/Vincenza-Genuardi/Genu_facebook/comments' */
-  data !: PostEComment;
-  oPosteComm !: Observable<PostEComment>;
-  mostra : boolean = false;
-  private serviceURLPostEComment = 'https://my-json-server.typicode.com/Vincenza-Genuardi/Genu_facebook/db';
-
-  constructor(public http: HttpClient) {
-  this.makeTypedRequest()
+export class AppComponent implements OnInit{
+  dataPost !: Post[];
+  comment !: Comment[];
+  inserito !: boolean;
+  constructor(private commentiService: CommentiService, private postsService: PostsService) {
+    
   }
-
-  /* makeTypedRequest() : void
-  {
-    this.oPost = this.http.get<Post[]>(this.serviceURLPosts);
-    this.oPost.subscribe( d => {this.dataPost = d;});
-    this.oComment = this.http.get<Comment[]>(this.serviceURLComments);
-    this.oComment.subscribe( d => {this.dataComment = d;});
-  }  */
-
-   makeTypedRequest() : void
-  {
-    this.oPosteComm = this.http.get<PostEComment>(this.serviceURLPostEComment);
-    this.oPosteComm.subscribe( d => {this.data = d;});  
+  ngOnInit() {
+    this.postsService.getPost().subscribe((data) => {
+      this.dataPost = data;
+      this.dataPost = this.postsService.ordinaPost();
+    });
+   
   }
-  addPost(autore: HTMLInputElement, testo: HTMLInputElement): boolean{
-      const id = this.data.posts.length + 1;
-      this.data.posts.push(new Post(id, autore.value, testo.value, 0));
+  
+  addPost(autore: HTMLInputElement, testo: HTMLInputElement): void{
+      if (autore.value !== '' && testo.value !== ''){
+        const id = this.dataPost.length + 1;
+        const newPost = new Post(id, autore.value, testo.value, 0);
+        this.postsService.addPost(newPost);
+        this.postsService.ordinaPost;
+        autore.value = '';
+        testo.value = '';
+        this.inserito = true;
+      }else if(autore.value === '' && testo.value === ''){
+        alert("*ATTENZIONE, I CAMPI AUTORE E TESTO DEVONO ESSERE RIMPITI PER INSERIRE UN NUOVO POST");
+        this.inserito = false;
+      }else if(autore.value === ''){
+        alert("*ATTENZIONE, IL CAMPO AUTORE DEVE ESSERE RIMPITO PER INSERIRE UN NUOVO POST");
+        this.inserito = false;
+      }else if(testo.value === '' ){
+        this.inserito = false;
+        alert("*ATTENZIONE, IL CAMPO TESTO DEVE ESSERE RIMPITO PER INSERIRE UN NUOVO POST");
+      }
       
-      autore.value = '';
-      testo.value = '';
-      return false;
   }
-  addCommento(autore: HTMLInputElement, testo: HTMLInputElement, idPost:number): boolean{
-    const id = this.contaNumeroCommenti(idPost) + 1;
-    this.data.comments.push(new Comment(id, autore.value, testo.value, idPost));
-    autore.value = '';
-    testo.value = '';
-    return false;
+  postOrdinati(){
+    const postOrdinati = this.postsService.ordinaPost();
+    return postOrdinati;
   }
+  commentiPerPost(id:number): Comment[] {
+    const commenti = this.commentiService.getCommSingoloPost(id);
+    return commenti;
+  } 
 
-  contaNumeroCommenti(idPost: number): any{
-    const comm = this.data.comments.filter(c => c.idpost == idPost)
-    return comm.length
-  }
-  sortedPost(): Post[] {
-    return this.data.posts.sort((a: Post, b: Post) => b.like - a.like);
-  }
-  visualCreaComment(): void {
-    if (this.mostra){
-      this.mostra = false;
-    }else{
-      this.mostra = true;
-    }
-  }
- 
   
 }
